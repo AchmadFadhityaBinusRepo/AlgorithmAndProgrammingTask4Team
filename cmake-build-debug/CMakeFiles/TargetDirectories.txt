@@ -1,0 +1,3 @@
+C:/Private/GitWorkingCopy/AlgorithmAndProgrammingTask4Team/cmake-build-debug/CMakeFiles/AlgorithmAndProgrammingTask4Team.dir
+C:/Private/GitWorkingCopy/AlgorithmAndProgrammingTask4Team/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Private/GitWorkingCopy/AlgorithmAndProgrammingTask4Team/cmake-build-debug/CMakeFiles/rebuild_cache.dir
