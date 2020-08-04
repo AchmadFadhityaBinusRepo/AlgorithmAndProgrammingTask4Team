@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+// -- Global Variable Declaration --
 typedef struct {
     char nama[7];
     char size[8];
@@ -14,6 +15,7 @@ const char *ALLOWED_PENYAJIAN[] = {"dingin", "panas", "hangat"};
 Minuman history_transaksi[100];
 int total_history_transaksi = 0;
 
+// -- Functions Prototype --
 void showMenu();
 
 void aksesMenu(int pilihan);
@@ -23,7 +25,6 @@ void inputData();
 int hitungHargaMinuman(Minuman minuman);
 
 int isInputValid(char input[7], const char *pAllowedThings[3]);
-
 
 void masukanKeHistory(Minuman minuman);
 
