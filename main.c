@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // -- Global Variable Declaration --
 typedef struct {
@@ -34,6 +35,10 @@ void deleteHistory();
 
 void deleteHistoryFromArray(int index);
 
+void exitProgram();
+
+void saveToFile();
+
 int main() {
     showMenu();
     return 0;
@@ -42,7 +47,7 @@ int main() {
 void showMenu() {
     int menu_pilihan;
     do {
-        printf("    Selamat Datang di Aplikasi Pencatatan Transaksi\n"
+        printf("\n    Selamat Datang di Aplikasi Pencatatan Transaksi\n"
                "\n"
                "    Menu:\n"
                "    1. Input Data\n"
@@ -69,12 +74,31 @@ void aksesMenu(int pilihan) {
             deleteHistory();
             break;
         case 4:
-//            exitProgram();
+            exitProgram();
             break;
         default:
             printf("    Maaf Pilihan menu tidak tersedia!");
             break;
     }
+}
+
+void exitProgram() {
+    saveToFile();
+    exit(1);
+}
+
+void saveToFile() {
+    FILE *fptr;
+
+    if ((fptr = fopen("history.bin", "wb")) == NULL) {
+        printf("Eror ketika membuka file");
+        return;
+    }
+
+    for (int i = 0; i < total_history_transaksi; i++) {
+        fwrite(&history_transaksi[i], sizeof(Minuman), 1, fptr);
+    }
+    fclose(fptr);
 }
 
 void deleteHistory() {
@@ -101,9 +125,9 @@ void deleteHistoryFromArray(int index) {
 }
 
 void viewHistory() {
-    printf("\nBerikut Data History Transaksi");
+    printf("\n    Berikut Data History Transaksi");
     for (int i = 0; i < total_history_transaksi; i++) {
-        printf("\nTransaksi ke-%d\n"
+        printf("\n\n  Transaksi ke-%d\n"
                "    Nama Minuman: %s\n"
                "    Size: %s\n"
                "    Penyajian: %s\n"
@@ -122,19 +146,19 @@ void inputData() {
 
     do {
         fflush(stdin);
-        printf("Input Nama Minuman: ");
+        printf("\n    Input Nama Minuman: ");
         scanf("%[^\n]%*c", minuman.nama);
     } while (isInputValid(minuman.nama, ALLOWED_NAMA) == 0);
 
     do {
         fflush(stdin);
-        printf("Input Size Minuman: ");
+        printf("    Input Size Minuman: ");
         scanf("%[^\n]%*c", minuman.size);
     } while (isInputValid(minuman.size, ALLOWED_SIZE) == 0);
 
     do {
         fflush(stdin);
-        printf("Input Penyajian Minuman: ");
+        printf("    Input Penyajian Minuman: ");
         scanf("%[^\n]%*c", minuman.penyajian);
     } while (isInputValid(minuman.penyajian, ALLOWED_PENYAJIAN) == 0);
 
@@ -145,7 +169,7 @@ void inputData() {
            "    Penyajian: %s\n"
            "    Harga: %d", minuman.nama, minuman.size, minuman.penyajian, minuman.harga);
 
-    printf("   \nApakah data di atas sudah valid? ");
+    printf("\n\n  Apakah data di atas sudah valid? ");
     scanf("%c", &valid);
 
     if (valid == 'n') {
@@ -166,7 +190,7 @@ int isInputValid(char input[], const char *pAllowedThings[]) {
             return 1;
         }
     }
-    printf("\nMaaf input tidak valid\n");
+    printf("\n    Maaf input tidak valid\n");
     return 0;
 }
 
