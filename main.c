@@ -71,6 +71,8 @@ void readDataMinumanFromFile() {
         fscanf(fp, "%s\n", buff);
         ALLOWED_PENYAJIAN[i] = strdup(buff);
     }
+
+    fclose(fp);
 }
 
 void showMenu() {
