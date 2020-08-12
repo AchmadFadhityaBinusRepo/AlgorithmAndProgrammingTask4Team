@@ -58,21 +58,18 @@ void readDataMinumanFromFile() {
     for (int i = 0; i < 4; i++) {
         fscanf(fp, "%s\n", buff);
         ALLOWED_NAMA[i] = strdup(buff);
-//        printf("%s\n", ALLOWED_NAMA[i]);
     }
 
     fscanf(fp, "\n");
     for (int i = 0; i < 3; i++) {
         fscanf(fp, "%s\n", buff);
         ALLOWED_SIZE[i] = strdup(buff);
-//        printf("%s\n", ALLOWED_SIZE[i]);
     }
 
     fscanf(fp, "\n");
     for (int i = 0; i < 3; i++) {
         fscanf(fp, "%s\n", buff);
         ALLOWED_PENYAJIAN[i] = strdup(buff);
-//        printf("%s\n", ALLOWED_PENYAJIAN[i]);
     }
 }
 
