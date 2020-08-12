@@ -10,9 +10,9 @@ typedef struct {
     int harga;
 } Minuman;
 
-const char *ALLOWED_NAMA[] = {"teh", "coklat", "soda", "kopi"};
-const char *ALLOWED_SIZE[] = {"small", "medium", "largest"};
-const char *ALLOWED_PENYAJIAN[] = {"dingin", "panas", "hangat"};
+char *ALLOWED_NAMA[4];
+char *ALLOWED_SIZE[3];
+char *ALLOWED_PENYAJIAN[3];
 Minuman history_transaksi[100];
 int total_history_transaksi = 0;
 
@@ -25,7 +25,7 @@ void inputData();
 
 int hitungHargaMinuman(Minuman minuman);
 
-int isInputValid(char input[7], const char *pAllowedThings[3]);
+int isInputValid(char input[], char *pAllowedThings[]);
 
 void masukanKeHistory(Minuman minuman);
 
@@ -39,9 +39,41 @@ void exitProgram();
 
 void saveToFile();
 
+void readDataMinumanFromFile();
+
+void showDataMinuman();
+
 int main() {
+    readDataMinumanFromFile();
     showMenu();
     return 0;
+}
+
+void readDataMinumanFromFile() {
+    FILE *fp;
+    char buff[10];
+
+    fp = fopen("dataminuman.txt", "r");
+
+    for (int i = 0; i < 4; i++) {
+        fscanf(fp, "%s\n", buff);
+        ALLOWED_NAMA[i] = strdup(buff);
+//        printf("%s\n", ALLOWED_NAMA[i]);
+    }
+
+    fscanf(fp, "\n");
+    for (int i = 0; i < 3; i++) {
+        fscanf(fp, "%s\n", buff);
+        ALLOWED_SIZE[i] = strdup(buff);
+//        printf("%s\n", ALLOWED_SIZE[i]);
+    }
+
+    fscanf(fp, "\n");
+    for (int i = 0; i < 3; i++) {
+        fscanf(fp, "%s\n", buff);
+        ALLOWED_PENYAJIAN[i] = strdup(buff);
+//        printf("%s\n", ALLOWED_PENYAJIAN[i]);
+    }
 }
 
 void showMenu() {
@@ -60,6 +92,23 @@ void showMenu() {
         scanf("%d", &menu_pilihan);
         aksesMenu(menu_pilihan);
     } while (1);
+}
+
+void showDataMinuman() {
+    printf("\n   Minuman Tersedia\n");
+    for (int i = 0; i < 4; i++) {
+        printf("   %s\n", ALLOWED_NAMA[i]);
+    }
+
+    printf("\n   Ukuran Tersedia\n");
+    for (int i = 0; i < 3; i++) {
+        printf("   %s\n", ALLOWED_SIZE[i]);
+    }
+
+    printf("\n   Penyajian Tersedia\n");
+    for (int i = 0; i < 3; i++) {
+        printf("   %s\n", ALLOWED_PENYAJIAN[i]);
+    }
 }
 
 void aksesMenu(int pilihan) {
@@ -90,13 +139,22 @@ void exitProgram() {
 void saveToFile() {
     FILE *fptr;
 
-    if ((fptr = fopen("history.bin", "wb")) == NULL) {
+    if ((fptr = fopen("history.txt", "w")) == NULL) {
         printf("Eror ketika membuka file");
         return;
     }
 
     for (int i = 0; i < total_history_transaksi; i++) {
-        fwrite(&history_transaksi[i], sizeof(Minuman), 1, fptr);
+        fprintf(fptr, "  Transaksi ke-%d\n"
+                      "    Nama Minuman: %s\n"
+                      "    Size: %s\n"
+                      "    Penyajian: %s\n"
+                      "    Harga: %d\n\n",
+                i + 1,
+                history_transaksi[i].nama,
+                history_transaksi[i].size,
+                history_transaksi[i].penyajian,
+                history_transaksi[i].harga);
     }
     fclose(fptr);
 }
@@ -144,6 +202,8 @@ void inputData() {
     Minuman minuman;
     char valid;
 
+    showDataMinuman();
+
     do {
         fflush(stdin);
         printf("\n    Input Nama Minuman: ");
@@ -169,7 +229,7 @@ void inputData() {
            "    Penyajian: %s\n"
            "    Harga: %d", minuman.nama, minuman.size, minuman.penyajian, minuman.harga);
 
-    printf("\n\n  Apakah data di atas sudah valid? ");
+    printf("\n\n  Apakah data di atas sudah valid?(y/n)");
     scanf("%c", &valid);
 
     if (valid == 'n') {
@@ -184,7 +244,7 @@ void masukanKeHistory(Minuman minuman) {
     total_history_transaksi++;
 }
 
-int isInputValid(char input[], const char *pAllowedThings[]) {
+int isInputValid(char input[], char *pAllowedThings[]) {
     for (int i = 0; i < 4; i++) {
         if (strcmp(input, pAllowedThings[i]) == 0) {
             return 1;

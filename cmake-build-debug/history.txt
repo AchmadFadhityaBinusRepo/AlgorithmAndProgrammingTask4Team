@@ -1,0 +1,12 @@
+  Transaksi ke-1
+    Nama Minuman: teh
+    Size: small
+    Penyajian: dingin
+    Harga: 9000
+
+  Transaksi ke-2
+    Nama Minuman: coklat
+    Size: medium
+    Penyajian: hangat
+    Harga: 21600
+
